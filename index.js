@@ -355,8 +355,6 @@ document.addEventListener("click", () => {
 });
 
 function updateLeaveSelectedUI() {
-  const selectedDiv = document.getElementById("leaveSelected");
-  selectedDiv.innerHTML = "";
 
   [...onLeaveAgents]
     .sort((a, b) => a.localeCompare(b))
@@ -425,6 +423,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stored = await loadFromDB();
   if (stored) renderWithLeaveFilter();
 });
+
 
 
 
