@@ -155,7 +155,12 @@ tbody td {
 }
 
 .cc-agent-selected {
-  margin-top: 10px;
+  min-height: 100px;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 8px;
+  background: #fafafa;
   font-size: 12px;
 }
 
@@ -215,4 +220,5 @@ tbody td {
 .secondary-btn {
   background: #999;
 }
+
 
