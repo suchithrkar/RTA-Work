@@ -308,6 +308,7 @@ function renderTable(rows) {
   tbody.innerHTML = "";
 
   const headers = [
+    "S.No",
     "Agent Name","Answered","Outbound","Handle","Alert - No Answer",
     "Non Productive","Logged In","Total Break","Exceeded Break",
     "Idle","Total Handle","Total Talk","Total Hold","Total ACW",
@@ -323,15 +324,29 @@ function renderTable(rows) {
   });
   thead.appendChild(tr);
 
-  rows.forEach(r => {
-    const row = document.createElement("tr");
-    r.forEach(c => {
-      const td = document.createElement("td");
-      td.textContent = c;
-      row.appendChild(td);
-    });
-    tbody.appendChild(row);
-  });
+   rows.forEach((r, index) => {
+     const row = document.createElement("tr");
+   
+     // Serial Number
+     const serialTd = document.createElement("td");
+     serialTd.textContent = index + 1;
+     serialTd.classList.add("center-cell");
+     row.appendChild(serialTd);
+   
+     r.forEach((c, i) => {
+       const td = document.createElement("td");
+       td.textContent = c;
+   
+       // Center align all except Agent Name (which is index 0 in r)
+       if (i !== 0) {
+         td.classList.add("center-cell");
+       }
+   
+       row.appendChild(td);
+     });
+   
+     tbody.appendChild(row);
+   });
 }
 
 document.getElementById("onLeaveBtn").onclick = () => {
@@ -445,6 +460,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stored = await loadFromDB();
   if (stored) renderWithLeaveFilter();
 });
+
 
 
 
