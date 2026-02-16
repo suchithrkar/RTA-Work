@@ -360,8 +360,11 @@ function buildLeaveDropdown() {
   box.innerHTML = "";
   selectedDiv.innerHTML = "";
 
-  const agents = [...document.querySelectorAll("#resultTable tbody tr")]
-    .map(r => r.children[0].textContent);
+   // Build agent list from full dataset (not DOM)
+   const agents = fullDataset.map(row => row[0]);
+   
+   // Sort alphabetically
+   agents.sort((a, b) => a.localeCompare(b));
 
   agents.forEach(name => {
     const label = document.createElement("label");
@@ -413,6 +416,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stored = await loadFromDB();
   if (stored) renderWithLeaveFilter();
 });
+
 
 
 
