@@ -378,9 +378,28 @@ function buildLeaveDropdown() {
   updateLeaveSelected();
 }
 
-document.getElementById("saveLeaveBtn").onclick = () => {
+document.getElementById("saveLeaveBtn").onclick = async () => {
+
   document.getElementById("onLeaveModal").style.display = "none";
-  processBtn.click();
+
+  // Load existing stored data
+  const tx = db.transaction(STORE_NAME, "readonly");
+  const req = tx.objectStore(STORE_NAME).get("agentPerformanceTable");
+
+  req.onsuccess = () => {
+    if (!req.result) return;
+
+    const allRows = req.result.rows || [];
+
+    // Filter out leave agents
+    const filteredRows = allRows.filter(r => !onLeaveAgents.has(r[0]));
+
+    // Re-render
+    renderTable(filteredRows);
+
+    // Save updated leave list + filtered rows
+    saveToDB(filteredRows);
+  };
 };
 
 /* =========================
@@ -392,6 +411,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stored = await loadFromDB();
   if (stored) renderTable(stored);
 });
+
 
 
 
