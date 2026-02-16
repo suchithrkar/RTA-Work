@@ -159,3 +159,60 @@ tbody td {
   font-size: 12px;
 }
 
+.modal {
+  background: #fff;
+  padding: 0;
+  width: 480px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.modal-header {
+  background: #151923;
+  color: #fff;
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.modal-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-group label {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.modal-footer {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid #ddd;
+  background: #fafafa;
+}
+
+.modal-footer button {
+  background: #151923;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: #999;
+}
+
