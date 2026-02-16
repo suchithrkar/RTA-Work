@@ -350,8 +350,14 @@ document.getElementById("leaveToggle").onclick = (e) => {
   box.style.display = box.style.display === "block" ? "none" : "block";
 };
 
-document.addEventListener("click", () => {
-  document.getElementById("leaveBox").style.display = "none";
+document.addEventListener("click", (e) => {
+  const box = document.getElementById("leaveBox");
+  const toggle = document.getElementById("leaveToggle");
+
+  // If click is outside dropdown and outside toggle
+  if (!box.contains(e.target) && !toggle.contains(e.target)) {
+    box.style.display = "none";
+  }
 });
 
 function updateLeaveSelectedUI() {
@@ -385,7 +391,8 @@ function buildLeaveDropdown() {
     cb.value = name;
     cb.checked = onLeaveAgents.has(name);
 
-   cb.onchange = () => {
+   cb.onchange = (e) => {
+     e.stopPropagation();
      if (cb.checked) {
        onLeaveAgents.add(name);
      } else {
@@ -423,6 +430,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stored = await loadFromDB();
   if (stored) renderWithLeaveFilter();
 });
+
 
 
 
