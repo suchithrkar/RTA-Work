@@ -13,10 +13,6 @@ body {
   font-weight: 600;
 }
 
-.container {
-  padding: 20px;
-}
-
 .upload-box {
   background: #fff;
   padding: 16px;
@@ -81,3 +77,4 @@ tbody td {
   border: 1px solid #eee;
   white-space: nowrap;
 }
+
