@@ -33,11 +33,35 @@
     <button id="processBtn" disabled>Process Excel</button>
   </div>
 
+  <div class="action-bar">
+    <button id="onLeaveBtn">On Leave</button>
+  </div>
+
   <div class="table-wrapper">
     <table id="resultTable">
       <thead></thead>
       <tbody></tbody>
     </table>
+  </div>
+
+  <div id="onLeaveModal" class="modal-overlay" style="display:none;">
+    <div class="modal">
+      <h3>Mark Agents On Leave</h3>
+  
+      <div class="cc-agent-dropdown">
+        <div id="leaveToggle" class="cc-agent-toggle">
+          Select Agents
+        </div>
+        <div id="leaveBox" class="cc-agent-box"></div>
+      </div>
+  
+      <div id="leaveSelected" class="cc-agent-selected"></div>
+  
+      <div class="modal-actions">
+        <button id="saveLeaveBtn">Save</button>
+        <button id="closeLeaveBtn">Close</button>
+      </div>
+    </div>
   </div>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -46,4 +70,5 @@
 </body>
 
 </html>
+
 
