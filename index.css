@@ -107,13 +107,6 @@ tbody td {
   z-index: 1000;
 }
 
-.modal {
-  background: #fff;
-  padding: 16px;
-  width: 400px;
-  border-radius: 6px;
-}
-
 .cc-agent-dropdown {
   position: relative;
 }
@@ -220,6 +213,7 @@ tbody td {
 .secondary-btn {
   background: #999;
 }
+
 
 
 
