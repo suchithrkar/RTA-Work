@@ -423,6 +423,19 @@ document.getElementById("saveLeaveBtn").onclick = () => {
   saveToDB(fullDataset);
 };
 
+document.getElementById("clearLeaveBtn").onclick = () => {
+
+  // Clear state
+  onLeaveAgents.clear();
+
+  // Uncheck all checkboxes visually
+  const checkboxes = document.querySelectorAll("#leaveBox input[type='checkbox']");
+  checkboxes.forEach(cb => cb.checked = false);
+
+  // Update selected UI
+  updateLeaveSelectedUI();
+};
+
 /* =========================
    Init
 ========================= */
@@ -432,6 +445,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stored = await loadFromDB();
   if (stored) renderWithLeaveFilter();
 });
+
 
 
 
