@@ -79,20 +79,20 @@ table {
 }
 
 thead th {
-  background: #151923;
-  color: #fff;
+  background: #f5f6f8;
+  color: #333;
   text-transform: uppercase;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 8px 10px;
-  border: 1px solid #dcdcdc;
+  border-bottom: 2px solid #d0d4da;
   white-space: nowrap;
   letter-spacing: 0.4px;
 }
 
 tbody td {
   padding: 6px 8px;
-  border: 1px solid #eee;
+  border-bottom: 1px solid #eee;
   white-space: nowrap;
 }
 
@@ -225,6 +225,7 @@ tbody tr:hover {
   background: #e0e0e0;
   color: #000;
 }
+
 
 
 
