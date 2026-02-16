@@ -49,6 +49,22 @@ body {
   cursor: not-allowed;
 }
 
+.upload-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: flex-end;
+}
+
+.upload-actions button {
+  background: #151923;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .table-wrapper {
   margin-top: 20px;
   overflow-x: auto;
@@ -76,25 +92,6 @@ tbody td {
   padding: 6px 8px;
   border: 1px solid #eee;
   white-space: nowrap;
-}
-
-.action-bar {
-  background: #fff;
-  padding: 12px 16px;
-  border: 1px solid #ddd;
-  border-top: none;
-  display: flex;
-  gap: 10px;
-}
-
-.action-bar button {
-  background: #151923;
-  color: #fff;
-  border: none;
-  padding: 6px 14px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
 }
 
 .modal-overlay {
@@ -218,6 +215,7 @@ tbody td {
   background: #e0e0e0;
   color: #000;
 }
+
 
 
 
