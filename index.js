@@ -336,6 +336,7 @@ function renderTable(rows) {
 
 document.getElementById("onLeaveBtn").onclick = () => {
   buildLeaveDropdown();
+  updateLeaveSelectedUI();   // ensure selected always shown
   document.getElementById("onLeaveModal").style.display = "flex";
 };
 
@@ -352,6 +353,19 @@ document.getElementById("leaveToggle").onclick = (e) => {
 document.addEventListener("click", () => {
   document.getElementById("leaveBox").style.display = "none";
 });
+
+function updateLeaveSelectedUI() {
+  const selectedDiv = document.getElementById("leaveSelected");
+  selectedDiv.innerHTML = "";
+
+  [...onLeaveAgents]
+    .sort((a, b) => a.localeCompare(b))
+    .forEach(name => {
+      const div = document.createElement("div");
+      div.textContent = "– " + name;
+      selectedDiv.appendChild(div);
+    });
+}
 
 function buildLeaveDropdown() {
   const box = document.getElementById("leaveBox");
@@ -373,27 +387,22 @@ function buildLeaveDropdown() {
     cb.value = name;
     cb.checked = onLeaveAgents.has(name);
 
-    cb.onchange = () => updateLeaveSelected();
+   cb.onchange = () => {
+     if (cb.checked) {
+       onLeaveAgents.add(name);
+     } else {
+       onLeaveAgents.delete(name);
+     }
+   
+     updateLeaveSelectedUI();
+   };
 
     label.appendChild(cb);
     label.appendChild(document.createTextNode(name));
     box.appendChild(label);
   });
 
-  function updateLeaveSelected() {
-    onLeaveAgents = new Set(
-      [...box.querySelectorAll("input:checked")].map(i => i.value)
-    );
-
-    selectedDiv.innerHTML = "";
-    onLeaveAgents.forEach(name => {
-      const div = document.createElement("div");
-      div.textContent = "– " + name;
-      selectedDiv.appendChild(div);
-    });
-  }
-
-  updateLeaveSelected();
+  updateLeaveSelectedUI();
 }
 
 document.getElementById("saveLeaveBtn").onclick = () => {
@@ -416,6 +425,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stored = await loadFromDB();
   if (stored) renderWithLeaveFilter();
 });
+
 
 
 
