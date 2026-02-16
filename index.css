@@ -19,7 +19,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  align-items: flex-end;
+  align-items: center;   /* changed from flex-end */
   border: 1px solid #ddd;
 }
 
@@ -52,7 +52,7 @@ body {
 .upload-actions {
   margin-left: auto;
   display: flex;
-  align-items: flex-end;
+  align-items: center;  /* changed from flex-end */
 }
 
 .upload-actions button {
@@ -215,6 +215,7 @@ tbody td {
   background: #e0e0e0;
   color: #000;
 }
+
 
 
 
