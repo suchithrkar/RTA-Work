@@ -9,6 +9,7 @@ const DB_NAME = "RTA_WORK_DB";
 const STORE_NAME = "rta_table";
 let db;
 let onLeaveAgents = new Set();
+let fullDataset = [];
 
 /* =========================
    IndexedDB Setup
@@ -36,7 +37,7 @@ function saveToDB(rows) {
   const tx = db.transaction(STORE_NAME, "readwrite");
   tx.objectStore(STORE_NAME).put({
     id: "agentPerformanceTable",
-    rows,
+    fullRows: rows,   // 🔥 store full dataset
     onLeave: [...onLeaveAgents],
     lastUpdated: new Date().toISOString()
   });
@@ -46,14 +47,16 @@ function loadFromDB() {
   return new Promise(resolve => {
     const tx = db.transaction(STORE_NAME, "readonly");
     const req = tx.objectStore(STORE_NAME).get("agentPerformanceTable");
-      req.onsuccess = () => {
-        if (req.result) {
-          onLeaveAgents = new Set(req.result.onLeave || []);
-          resolve(req.result.rows || null);
-        } else {
-          resolve(null);
-        }
-      };
+
+    req.onsuccess = () => {
+      if (req.result) {
+        onLeaveAgents = new Set(req.result.onLeave || []);
+        fullDataset = req.result.fullRows || [];
+        resolve(fullDataset);
+      } else {
+        resolve(null);
+      }
+    };
   });
 }
 
@@ -211,7 +214,6 @@ processBtn.addEventListener("click", async () => {
   const finalRows = [];
 
   agents.forEach(agent => {
-     if (onLeaveAgents.has(agent)) return;
     const p = perfMap[agent] || [];
     const s = statusMap[agent] || [];
 
@@ -277,13 +279,26 @@ processBtn.addEventListener("click", async () => {
      return toSec(b[5]) - toSec(a[5]);
    });
 
-  renderTable(finalRows);
-  saveToDB(finalRows);
+   fullDataset = finalRows;
+   
+   // Render with leave filtering applied
+   renderWithLeaveFilter();
+   
+   // Save FULL dataset
+   saveToDB(fullDataset);
 });
 
 /* =========================
    Render Table
 ========================= */
+
+function renderWithLeaveFilter() {
+  const filtered = fullDataset.filter(row => 
+    !onLeaveAgents.has(row[0])
+  );
+
+  renderTable(filtered);
+}
 
 function renderTable(rows) {
   const thead = document.querySelector("#resultTable thead");
@@ -378,28 +393,15 @@ function buildLeaveDropdown() {
   updateLeaveSelected();
 }
 
-document.getElementById("saveLeaveBtn").onclick = async () => {
+document.getElementById("saveLeaveBtn").onclick = () => {
 
   document.getElementById("onLeaveModal").style.display = "none";
 
-  // Load existing stored data
-  const tx = db.transaction(STORE_NAME, "readonly");
-  const req = tx.objectStore(STORE_NAME).get("agentPerformanceTable");
+  // Re-render using filter only (non-destructive)
+  renderWithLeaveFilter();
 
-  req.onsuccess = () => {
-    if (!req.result) return;
-
-    const allRows = req.result.rows || [];
-
-    // Filter out leave agents
-    const filteredRows = allRows.filter(r => !onLeaveAgents.has(r[0]));
-
-    // Re-render
-    renderTable(filteredRows);
-
-    // Save updated leave list + filtered rows
-    saveToDB(filteredRows);
-  };
+  // Save leave list + full dataset (not filtered)
+  saveToDB(fullDataset);
 };
 
 /* =========================
@@ -409,8 +411,9 @@ document.getElementById("saveLeaveBtn").onclick = async () => {
 document.addEventListener("DOMContentLoaded", async () => {
   await openDB();
   const stored = await loadFromDB();
-  if (stored) renderTable(stored);
+  if (stored) renderWithLeaveFilter();
 });
+
 
 
 
