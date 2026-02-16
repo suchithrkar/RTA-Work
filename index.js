@@ -83,15 +83,35 @@ function updateButton() {
 ========================= */
 
 function timeToSeconds(value) {
-  if (!value) return 0;
+  if (!value && value !== 0) return 0;
 
+  // If already number
   if (typeof value === "number") {
-    return Math.round(value * 86400);
+
+    // Excel time fraction (less than 1 day)
+    if (value < 1) {
+      return Math.round(value * 86400);
+    }
+
+    // Already seconds (large integer)
+    return Math.round(value);
   }
 
-  if (value.includes(":")) {
+  // If string like HH:MM:SS
+  if (typeof value === "string" && value.includes(":")) {
     const parts = value.split(":").map(Number);
-    return parts[0]*3600 + parts[1]*60 + (parts[2] || 0);
+    return parts[0] * 3600 + parts[1] * 60 + (parts[2] || 0);
+  }
+
+  // If numeric string
+  if (!isNaN(value)) {
+    const num = Number(value);
+
+    if (num < 1) {
+      return Math.round(num * 86400);
+    }
+
+    return Math.round(num);
   }
 
   return 0;
@@ -289,3 +309,4 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stored = await loadFromDB();
   if (stored) renderTable(stored);
 });
+
