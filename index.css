@@ -67,15 +67,15 @@ body {
 
 .table-wrapper {
   margin-top: 20px;
-  overflow-x: hidden;
+  overflow-x: auto;
   background: #fff;
   border: 1px solid #ddd;
 }
 
 table {
   border-collapse: collapse;
-  width: 100%;
-  table-layout: fixed;
+  width: max-content;
+  min-width: 100%;
 }
 
 thead th {
@@ -87,11 +87,13 @@ thead th {
   padding: 6px 6px;
   border-bottom: 2px solid #d0d4da;
   letter-spacing: 0.4px;
+  white-space: nowrap;
 }
 
 tbody td {
   padding: 5px 6px;
   border-bottom: 1px solid #eee;
+  white-space: nowrap;
 }
 
 tbody tr:hover {
@@ -223,6 +225,7 @@ tbody tr:hover {
   background: #e0e0e0;
   color: #000;
 }
+
 
 
 
