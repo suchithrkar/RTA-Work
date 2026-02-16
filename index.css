@@ -1,0 +1,83 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f2f2f2;
+  font-size: 13px;
+}
+
+.app-header {
+  background: #151923;
+  color: #fff;
+  padding: 18px 24px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.container {
+  padding: 20px;
+}
+
+.upload-box {
+  background: #fff;
+  padding: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  border: 1px solid #ddd;
+}
+
+.upload-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.upload-group label {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+#processBtn {
+  background: #151923;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#processBtn:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+.table-wrapper {
+  margin-top: 20px;
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 1600px;
+}
+
+thead th {
+  background: #f0f1f3;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 6px 8px;
+  border: 1px solid #eee;
+  white-space: nowrap;
+}
