@@ -8,6 +8,7 @@ let statusFile = null;
 const DB_NAME = "RTA_WORK_DB";
 const STORE_NAME = "rta_table";
 let db;
+let onLeaveAgents = new Set();
 
 /* =========================
    IndexedDB Setup
@@ -36,6 +37,7 @@ function saveToDB(rows) {
   tx.objectStore(STORE_NAME).put({
     id: "agentPerformanceTable",
     rows,
+    onLeave: [...onLeaveAgents],
     lastUpdated: new Date().toISOString()
   });
 }
@@ -44,7 +46,14 @@ function loadFromDB() {
   return new Promise(resolve => {
     const tx = db.transaction(STORE_NAME, "readonly");
     const req = tx.objectStore(STORE_NAME).get("agentPerformanceTable");
-    req.onsuccess = () => resolve(req.result?.rows || null);
+      req.onsuccess = () => {
+        if (req.result) {
+          onLeaveAgents = new Set(req.result.onLeave || []);
+          resolve(req.result.rows || null);
+        } else {
+          resolve(null);
+        }
+      };
   });
 }
 
@@ -202,6 +211,7 @@ processBtn.addEventListener("click", async () => {
   const finalRows = [];
 
   agents.forEach(agent => {
+     if (onLeaveAgents.has(agent)) return;
     const p = perfMap[agent] || [];
     const s = statusMap[agent] || [];
 
@@ -309,6 +319,70 @@ function renderTable(rows) {
   });
 }
 
+document.getElementById("onLeaveBtn").onclick = () => {
+  buildLeaveDropdown();
+  document.getElementById("onLeaveModal").style.display = "flex";
+};
+
+document.getElementById("closeLeaveBtn").onclick = () => {
+  document.getElementById("onLeaveModal").style.display = "none";
+};
+
+document.getElementById("leaveToggle").onclick = (e) => {
+  e.stopPropagation();
+  const box = document.getElementById("leaveBox");
+  box.style.display = box.style.display === "block" ? "none" : "block";
+};
+
+document.addEventListener("click", () => {
+  document.getElementById("leaveBox").style.display = "none";
+});
+
+function buildLeaveDropdown() {
+  const box = document.getElementById("leaveBox");
+  const selectedDiv = document.getElementById("leaveSelected");
+
+  box.innerHTML = "";
+  selectedDiv.innerHTML = "";
+
+  const agents = [...document.querySelectorAll("#resultTable tbody tr")]
+    .map(r => r.children[0].textContent);
+
+  agents.forEach(name => {
+    const label = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.value = name;
+    cb.checked = onLeaveAgents.has(name);
+
+    cb.onchange = () => updateLeaveSelected();
+
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(name));
+    box.appendChild(label);
+  });
+
+  function updateLeaveSelected() {
+    onLeaveAgents = new Set(
+      [...box.querySelectorAll("input:checked")].map(i => i.value)
+    );
+
+    selectedDiv.innerHTML = "";
+    onLeaveAgents.forEach(name => {
+      const div = document.createElement("div");
+      div.textContent = "– " + name;
+      selectedDiv.appendChild(div);
+    });
+  }
+
+  updateLeaveSelected();
+}
+
+document.getElementById("saveLeaveBtn").onclick = () => {
+  document.getElementById("onLeaveModal").style.display = "none";
+  processBtn.click();
+};
+
 /* =========================
    Init
 ========================= */
@@ -318,5 +392,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stored = await loadFromDB();
   if (stored) renderTable(stored);
 });
+
 
 
