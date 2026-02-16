@@ -361,7 +361,7 @@ function buildLeaveDropdown() {
   selectedDiv.innerHTML = "";
 
    // Build agent list from full dataset (not DOM)
-   const agents = fullDataset.map(row => row[0]);
+   const agents = [...new Set(fullDataset.map(row => row[0]))];
    
    // Sort alphabetically
    agents.sort((a, b) => a.localeCompare(b));
@@ -416,6 +416,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stored = await loadFromDB();
   if (stored) renderWithLeaveFilter();
 });
+
 
 
 
