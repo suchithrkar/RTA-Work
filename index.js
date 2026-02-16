@@ -258,6 +258,15 @@ processBtn.addEventListener("click", async () => {
     ]);
   });
 
+   // Sort by Non Productive (column index 5) descending
+   finalRows.sort((a, b) => {
+     const toSec = str => {
+       const parts = str.split(":").map(Number);
+       return parts[0]*3600 + parts[1]*60 + parts[2];
+     };
+     return toSec(b[5]) - toSec(a[5]);
+   });
+
   renderTable(finalRows);
   saveToDB(finalRows);
 });
@@ -309,4 +318,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stored = await loadFromDB();
   if (stored) renderTable(stored);
 });
+
 
