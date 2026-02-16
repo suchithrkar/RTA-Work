@@ -141,7 +141,7 @@ tbody td {
   right: 0;
   border: 1px solid #ccc;
   background: #fff;
-  max-height: 160px;
+  max-height: 142px;
   overflow-y: auto;
   padding: 6px;
   z-index: 10;
@@ -220,5 +220,6 @@ tbody td {
 .secondary-btn {
   background: #999;
 }
+
 
 
